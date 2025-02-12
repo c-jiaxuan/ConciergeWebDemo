@@ -1,8 +1,8 @@
 const wrapper = document.getElementById('AIPlayerWrapper');
 const authServer = 'https://account.aistudios.com';
 const AI_PLAYER = new AIPlayer(wrapper);
-const appId = 'nba.web.demo';
-const userKey = '6d6dd666-b054-49e0-9342-e523e4dec1c6';
+const appId = 'conciergewebdemo.onrender.com';
+const userKey = '8e7123a9-7b87-4dfc-a520-df0a812cf535';
 
 AI_PLAYER.setConfig({
   authServer: authServer,
