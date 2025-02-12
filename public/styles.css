@@ -1,0 +1,345 @@
+body {
+    font-family: Arial, sans-serif;
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    width: 100%;
+    height: 100vh;
+}
+
+body::before {
+    content: "";
+    background: url('./Images/changi-chapel-courtyard.jpg') no-repeat center center;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    opacity: 0.5; /* Adjust transparency here */
+    z-index: -1; /* Place it behind the content */
+}
+
+.header {
+    position: fixed; /* Keeps the header fixed */
+    top: 0;
+    left: 0;
+    padding: 16px;
+    width: 100%; /* Full width of the viewport */
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.logo-container img {
+    width: 150px;
+    height: auto;
+}
+
+.user_options {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    top: 7vh;
+    right: -45%;
+    height: 85%;    
+    width: 50%;
+    z-index: 1000;
+}
+
+/* Container Styling */
+.container {
+    position: relative;
+    width: 90%;
+    background: #fff;
+    padding: 20px;
+    margin: 8px;
+    border-radius: 8px;
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
+}
+
+.imageContainer {
+    position: relative;
+    width: 90%;
+    background: #fff;
+    padding: 20px;
+    margin: 8px;
+    border-radius: 8px;
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Question Text */
+.question {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+}
+
+/* Checkbox Group Styling */
+.checkbox-group {
+    margin: 10px 0;
+    font-size: 2em;
+}
+
+input[type="checkbox"] {
+    transform: scale(4); /* Increase the size of the checkbox */
+    transform-origin: left;
+    margin-right: 45px; /* Optional: Add spacing between checkbox and label */
+    margin-bottom: 25px;
+}
+
+/* Button Styling */
+button {
+    padding: 10px 15px;
+    margin: 5px 0;
+    width: 100%;
+    background: #aa8200;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 2em;
+}
+
+button:hover {
+    background: #806200;
+}
+
+/* Hidden Elements */
+.hidden {
+    display: none;
+}
+
+/* Back Button Styling */
+.back-button {
+    background: #6c757d;
+}
+
+.back-button:hover {
+    background: #5a6268;
+}
+
+#AIPlayerWrapper {
+    position: fixed;
+    height: 2200px;
+    width: 1500px;
+    bottom: -115%;
+    left: -15%;
+}
+
+.AIControlContainer {
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+	position: fixed; 
+	top: 100px; 
+	right: 100px;
+}
+
+/* Main Menu Button Styling */
+#main-menu-button {
+    position: fixed;
+    width: 35%;
+    top: 10px;
+    right: 10px;
+    background: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    z-index: 1000; /* Ensure it appears above other elements */
+}
+
+#main-menu-button:hover {
+    background: #0056b3;
+}
+
+/* Modal Overlay */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    box-shadow: 0 10px 16px rgba(0, 0, 0, 0.35);
+}
+
+/* Modal Content */
+.modal-content {
+    position: relative;
+    width: 85%;
+    height: 85%;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Ensure the button is at the bottom */
+    align-items: center; /* Center items horizontally */
+    padding-bottom: 10px; /* Add spacing for aesthetics */
+}
+
+/* Iframe Styling */
+#wayfinding-iframe {
+    flex-grow: 1;
+    width: 100%;
+    height: auto; /* Let it resize naturally */
+    border: none;
+}
+
+/* Close Button */
+.close-button {
+    background: #aa8200;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.5em;
+    margin-top: 10px;
+    width: 80%;
+}
+
+.close-button:hover {
+    background: #806200;
+}
+
+.hidden {
+    display: none !important; 
+}
+
+.input-area-container {
+    width: 100%;
+    height: 10%;
+    border-radius: 8px;
+    background: #ffffff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-area {
+    width: 85%;
+    height: 75%;
+    padding: 8px;
+    font-size: 24px;
+    border: none;
+}
+
+.send-button {
+    width: 15%;
+    height: 80%;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background: none;
+}
+
+.send-button img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.send-button:hover img {
+    content: url('./Images/Control_Signs/Send_Hover.png');
+}
+
+.button1 {
+    height: 100%;
+    width: 35%;
+    border-radius: 90px;
+    display: flex;
+    align-items: center; /* Vertically centers the content */
+    justify-content: flex-start; /* Horizontally centers the content */
+    text-align: center;
+    gap: 10px;
+    bottom: 0;
+}
+
+.button img {
+    width: 15%;
+    height: auto;
+}
+
+.speak-button-container {
+    height: 7%;
+    display: flex; 
+    flex-direction: row; 
+    justify-content: center;
+}
+
+.chat-container {
+    position: relative;
+    padding: 8px;
+    height: 95%;
+    background: #f1f1f1;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px #0000001a;
+    display: flex; 
+    flex-direction: column; 
+    justify-content: flex-end;
+    z-index: 1
+}
+
+.chat-history-container {
+    overflow-y: auto;
+    height: 100%;
+    padding: 15px;
+    display: flexbox;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.message {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.message.user {
+    text-align: right;
+}
+.message.bot {
+    text-align: left;
+}
+.message span {
+    display: inline-block;
+    padding: 10px;
+    border-radius: 10px;
+}
+.message.user span {
+    background: #ffffff;
+    color: rgb(32, 32, 32);
+}
+.message.bot span {
+    background: #aa8200;
+    color: rgb(255, 255, 255);
+}
+.message-time {
+    font-size: 18px;
+    color: #888;
+    margin-top: 2px;
+}
+
+.text-overlay {
+    position: relative; /* Position relative to the container */
+    left: 50%; /* Center horizontally */
+    transform: translateX(-50%); /* Correct centering offset */
+    color: black; /* Text color */
+    padding: 10px 20px; /* Padding around text */
+    font-size: 28px; /* Text size */
+    font-weight: bold;
+    border-radius: 8px; /* Optional: Rounded corners */
+    text-align: center; /* Center-align text */
+}
+
