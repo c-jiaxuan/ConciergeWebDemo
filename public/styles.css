@@ -123,7 +123,7 @@ button:hover {
     height: 1750px;
     width: 1000px;
     top: 15%;
-    left: -15%;
+    left: -10%;
     pointer-events: none; 
     z-index: 2;
 }
