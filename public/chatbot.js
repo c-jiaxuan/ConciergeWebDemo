@@ -183,8 +183,23 @@ function beginChat() {
 
 function sendMessage() {
     console.log("Sending message to bot");
+    
     const message = userInput.value.trim();
     if (message === '') return;
+
+    // Add user message
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user';
+    userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(userMessage);
+
+    userInput.value = '';
+
+    botResponse(message);
+}
+
+function sendMessageFromSpeech(message){
+    console.log("Sending message to bot");
 
     // Add user message
     const userMessage = document.createElement('div');
