@@ -248,6 +248,70 @@ function botResponse(response) {
             speak(bot_reply.message, bot_reply.gesture);
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'message bot';
+            botMessageDiv.innerHTML = `<span>${bot_reply.message}</span><div class="message-time">${dateString} ${timeString}</div>`;
+            chatBody.appendChild(botMessageDiv);
+            const botSpan = botMessageDiv.querySelector('span');
+            // After typing finishes, swap to HTML with bold formatting
+            botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+            if (prompt == true) {
+                var prompt_msg = getRandomElement(botMessages["prompt_msgs"])
+                botMessage(prompt_msg.message, prompt_msg.gesture);
+            }
+            if (wayfindingMode && code != null) {
+                openWayfinding();
+                // Handle messages from the iframe to update the URL
+                window.addEventListener('message', (event) => {
+                    if (event.data.type === 'app-loaded') {
+                        console.log("Iframe has loaded!");
+                        setDestination(code);
+                        wayfindingMode = false;
+                    }
+                });
+            }
+
+            // Scroll to the bottom
+            chatBody.scrollTop = chatBody.scrollHeight;
+        });
+    }
+}
+
+// Takes in response from user input and replies based on input
+// Takes in a bool 'prompt' for whether to prompt the user for more input
+function botResponse_Typing(response) {
+    var bot_reply = null;
+    var prompt = true;
+    var lowerCase_response = response.toLowerCase();
+    var code = null;
+    if (!wayfindingMode) {
+        if (lowerCase_response.includes(substring_1)) {
+            bot_reply = botMessages["pow_response"];
+        } else if (lowerCase_response.includes(substring_2)) {
+            bot_reply = botMessages["liberation_response"];
+        } else if (includeString(response, 'wayfinding')) {
+            bot_reply = botMessages['wayfinding_msgs'][0];
+            wayfindingMode = true;
+            prompt = false;
+        } else {
+            // bot_reply = getRandomElement(botMessages["default_msgs"]);
+            var response = postAPI(response);
+            prompt = false;
+        }
+    } else {
+        code = checkDestinations(response.toLowerCase());
+        if (code == null) {
+            bot_reply = botMessages['wayfinding_msgs'][2];
+        } else {
+            bot_reply = botMessages['wayfinding_msgs'][1];
+        }
+        prompt = false;
+    }
+
+    if (bot_reply != null) {
+        setTimeout(() => {
+            speak(bot_reply.message, bot_reply.gesture);
+            const botMessageDiv = document.createElement('div');
+            botMessageDiv.className = 'message bot';
             botMessageDiv.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
             chatBody.appendChild(botMessageDiv);
             const botSpan = botMessageDiv.querySelector('span');
@@ -285,6 +349,48 @@ function botResponse(response) {
 
 // Takes in a message to be sent by the bot
 function botMessage(setMessage, gesture) {
+    setTimeout(() => {
+        speak(setMessage.toString(), gesture);
+        const botMessageElement = document.createElement('div');
+        botMessageElement.className = 'message bot';
+        botMessageElement.innerHTML = `<span>${setMessage}</span><div class="message-time">${dateString} ${timeString}</div>`;
+        chatBody.appendChild(botMessageElement);
+        const botSpan = botMessageElement.querySelector('span');
+        // After typing finishes, swap to HTML with bold formatting
+        botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+        if (g_follow_up_questions != null) {
+            const followupMessageElemenet = document.createElement('div');
+            followupMessageElemenet.className = 'message bot';
+            followupMessageElemenet.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
+            chatBody.appendChild(followupMessageElemenet);
+            const followupSpan = followupMessageElemenet.querySelector('span');
+
+            let header = document.createElement("p");
+            header.textContent = "Some common follow-up questions:";
+            header.style.fontWeight = "bold"; // Make header bold
+            followupSpan.append(header);
+            
+            // Loop through follow-up questions and create bullet points
+            g_follow_up_questions.forEach(question => {
+                let li = document.createElement("li");
+                li.textContent = question;
+                followupSpan.appendChild(li);
+            });
+            
+
+            console.log("Follow up questions found, sending follow up question...");
+            //botMessage(g_follow_up_questions[0]);
+            g_follow_up_questions = null;
+        }
+
+        // Scroll to the bottom
+        chatBody.scrollTop = chatBody.scrollHeight;
+    });
+}
+
+// Takes in a message to be sent by the bot
+function botMessage_Typing(setMessage, gesture) {
     setTimeout(() => {
         speak(setMessage.toString(), gesture);
         const botMessageElement = document.createElement('div');
