@@ -27,8 +27,8 @@ botMessages["followup_prompt"] = new AI_Message("Here are some follow up questio
 botMessages["tour_setup_msgs"] = [new AI_Message("Have you been to this museum before?", "G02"),
                                 new AI_Message("Please enter your age group."),
                                 new AI_Message("Select your interests and what you wish to see in your tour.", "G02"),
-                                new AI_Message("Indicate your preferred time slots."),
-                                new AI_Message("Here are you preferences for the customized tour.", "G04")
+                                new AI_Message("Indicate your preferred tour duration."),
+                                new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04")
                                 ];
 botMessages["wayfinding_msgs"] = [new AI_Message("Where would you like to head to?"),
                                 new AI_Message("This is how to get to your destination", "G04"),
