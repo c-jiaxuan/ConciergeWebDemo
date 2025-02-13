@@ -395,6 +395,10 @@ function postAPI(message) {
         console.log("Cleaned Message Content:", messageContent);
         console.log("Follow-Up Questions:", followUpQuestions);
 
+        if (messageContent == "") {
+            messageContent = getRandomElement(botMessages['default_msgs']).message;
+        }
+
         // Send the message
         botMessage(messageContent);
 
