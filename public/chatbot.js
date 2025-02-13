@@ -245,6 +245,11 @@ function botResponse(response) {
 
     if (bot_reply != null) {
         setTimeout(() => {
+
+            showRecordBtn(true);
+            showTalkBtn(false);
+            showProcessingBtn(false);
+
             speak(bot_reply.message, bot_reply.gesture);
             const botMessageDiv = document.createElement('div');
             botMessageDiv.className = 'message bot';
