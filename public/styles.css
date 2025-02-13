@@ -44,13 +44,13 @@ body::before {
     right: -45%;
     height: 85%;    
     width: 50%;
-    z-index: 1000;
+    z-index: 1;
 }
 
 /* Container Styling */
 .container {
     position: relative;
-    width: 90%;
+    width: 75%;
     background: #fff;
     padding: 20px;
     margin: 8px;
@@ -124,6 +124,8 @@ button:hover {
     width: 1500px;
     bottom: -115%;
     left: -15%;
+    pointer-events: none; 
+    z-index: 2;
 }
 
 .AIControlContainer {
@@ -133,6 +135,8 @@ button:hover {
 	position: fixed; 
 	top: 100px; 
 	right: 100px;
+    pointer-events: none;
+    z-index: 2;
 }
 
 /* Main Menu Button Styling */
