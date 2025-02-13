@@ -13,16 +13,13 @@ var substring_3 = "wayfinding";
 let botMessages = {};   // Dictionary to store all preset bot messages
 botMessages["start_msg"] = new AI_Message("Hello! Welcome to the Changi Chapel Museum. How can I help you today?", "G05");
 botMessages["greeting_msg"] = new AI_Message("Hi! Let me know if you have any questions, you can input your questions into the input box, or by using the \"Speak to AI\" button");
-botMessages["pow_response"] = new AI_Message("Before the war, Changi had been a formidable military garrison, but with surrender it now became a place of isolation and numbing drudgery for thousands of new prisoners of war (POWs). The Japanese left the day-to-day running of the camps to the prisoners due to their sheer numbers, communicating instead through their officers or appointed representatives. To keep the camps in a liveable state, laborious chores and duties were shared among internees, from daily jobs like cooking and cleaning to the disposal of night soil. Precious little time was left over for personal activities before the lights went out each night. For the internees of Changi, the prospect of imprisonment was grim, but they were determined to endure what lay ahead.", "G02");
-botMessages["liberation_response"] = new AI_Message("By mid-1945, Germany had surrendered and the Allied forces were poised for an invasion of Japan. Just days after atomic bombs devastated the Japanese cities of Hiroshima and Nagasaki, Emperor Hirohito formally announced the unconditional surrender of all Japanese forces on 15 August 1945. Stunned by their defeat, some Japanese soldiers did not immediately obey their orders, unable to accept the shame of surrender. All the soldiers were eventually imprisoned as the Allied POWs had been in 1942. The internees, who had by now waited three and a half years for liberation, experienced everything from joy to relief. The Union Jack, carefully hidden from the Japanese during imprisonment, was raised once more as Allied soldiers returned to Singapore.", "G02");
+// botMessages["pow_response"] = new AI_Message("Before the war, Changi had been a formidable military garrison, but with surrender it now became a place of isolation and numbing drudgery for thousands of new prisoners of war (POWs). The Japanese left the day-to-day running of the camps to the prisoners due to their sheer numbers, communicating instead through their officers or appointed representatives. To keep the camps in a liveable state, laborious chores and duties were shared among internees, from daily jobs like cooking and cleaning to the disposal of night soil. Precious little time was left over for personal activities before the lights went out each night. For the internees of Changi, the prospect of imprisonment was grim, but they were determined to endure what lay ahead.", "G02");
+// botMessages["liberation_response"] = new AI_Message("By mid-1945, Germany had surrendered and the Allied forces were poised for an invasion of Japan. Just days after atomic bombs devastated the Japanese cities of Hiroshima and Nagasaki, Emperor Hirohito formally announced the unconditional surrender of all Japanese forces on 15 August 1945. Stunned by their defeat, some Japanese soldiers did not immediately obey their orders, unable to accept the shame of surrender. All the soldiers were eventually imprisoned as the Allied POWs had been in 1942. The internees, who had by now waited three and a half years for liberation, experienced everything from joy to relief. The Union Jack, carefully hidden from the Japanese during imprisonment, was raised once more as Allied soldiers returned to Singapore.", "G02");
 botMessages["premade_tour_response"] = new AI_Message("Here is a tour you might be interested in!", "G02");
 botMessages["default_msgs"] = [new AI_Message("I am not sure what you have sent, please try again."),
-                                new AI_Message("I don't quite understand what you are saying, please try again."),
-                                new AI_Message("I am sorry but can you please repeat the question?")
+                                new AI_Message("I don't quite understand what you are saying, please try again.")
                                 ];
-botMessages["prompt_msgs"] = [new AI_Message("Let me know if you require any further help!", "G02"),
-                            new AI_Message("If you have any other questions, don't hestiate to ask me!")
-                            ];
+botMessages["prompt_msgs"] = new AI_Message("Let me know if you require any further help!", "G02");
 botMessages["followup_prompt"] = new AI_Message("Here are some follow up questions you might be interested to ask!", "G02");
 botMessages["tour_setup_msgs"] = [new AI_Message("Have you been to this museum before?", "G02"),
                                 new AI_Message("Please enter your age group."),
@@ -260,7 +257,7 @@ function botResponse(response) {
             botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
 
             if (prompt == true) {
-                var prompt_msg = getRandomElement(botMessages["prompt_msgs"])
+                var prompt_msg = botMessages["prompt_msgs"];
                 botMessage(prompt_msg.message, prompt_msg.gesture);
             }
             if (wayfindingMode && code != null) {
@@ -329,7 +326,7 @@ function botResponse_Typing(response) {
                 } else {
                     clearInterval(interval);
                     if (prompt == true) {
-                        var prompt_msg = getRandomElement(botMessages["prompt_msgs"])
+                        var prompt_msg = botMessages["prompt_msgs"];
                         botMessage(prompt_msg.message, prompt_msg.gesture);
                     }
                     if (wayfindingMode && code != null) {
