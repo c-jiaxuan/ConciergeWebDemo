@@ -56,7 +56,7 @@
             <!-- Landing Screen -->
             <div id="landing-screen">
                 <p class="question">Welcome! What would you like to do today?</p>
-                <button onclick="startGuidedTour(); tourSetupSpeak(0)">Guided Tour Setup</button>
+                <button onclick="startGuidedTour()">Guided Tour Setup</button>
                 <button onclick="showChatInterface(); beginChat()">Ask AI</button>
                 <button onclick="openWayfinding()">Wayfinding Page</button>
             </div>
@@ -64,16 +64,16 @@
             <!-- Step 1: Have you been here before -->
             <div id="step-1" class="hidden">
                 <p class="question">Have you been to this museum before?</p>
-                <button onclick="handleExperience('yes'); tourSetupSpeak(1)">Yes</button>
+                <button onclick="handleExperience('yes')">Yes</button>
                 <button onclick="handleExperience('no'); tourSetupSpeak(1)">No</button>
             </div>
 
             <!-- Other steps remain unchanged -->
             <div id="step-2" class="hidden">
                 <p class="question">What is your age group?</p>
-                <button onclick="handleAgeGroup('Child'); tourSetupSpeak(2)">Under 18</button>
-                <button onclick="handleAgeGroup('Adult'); tourSetupSpeak(2)">18-64</button>
-                <button onclick="handleAgeGroup('Senior'); tourSetupSpeak(2)">65+</button>
+                <button onclick="handleAgeGroup('Child');">Under 18</button>
+                <button onclick="handleAgeGroup('Adult');">18-64</button>
+                <button onclick="handleAgeGroup('Senior');">65+</button>
                 <button class="back-button" onclick="goBackToExperience()">Back</button>
             </div>
 
@@ -89,7 +89,7 @@
                     <label><input type="checkbox" value="Liberation" class="interests"> Liberation</label><br>
                     <label><input type="checkbox" value="Legacies" class="interests"> Legacies</label>
                 </div>
-                <button onclick="handleInterests(); tourSetupSpeak(3)">Next</button>
+                <button onclick="handleInterests()">Next</button>
                 <button class="back-button" onclick="goBackToAgeGroup()">Back</button>
             </div>
 
@@ -100,13 +100,13 @@
                     <label><input type="checkbox" value="60 Minutes" class="time-slot"> 60 Minutes</label><br>
                     <label><input type="checkbox" value="90 Minutes" class="time-slot"> 90 Minutes</label><br>
                 </div>
-                <button onclick="handleTimeSlot(); tourSetupSpeak(4)">Submit</button>
+                <button onclick="handleTimeSlot(); tourFinalSpeech()">Submit</button>
                 <button class="back-button" onclick="goBackToInterests()">Back</button>
             </div>
             <div id="result" class="hidden">
                 <p class="question" id="output-message"></p>
                 <button onclick="">Proceed with Tour</button>
-                <button class="back-button" onclick="restart(); tourSetupSpeak(0);">Start Over</button>
+                <button class="back-button" onclick="restart();">Start Over</button>
             </div>
         </div>
         <div id="banner-image"  class="imageContainer">

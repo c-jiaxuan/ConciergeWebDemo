@@ -21,12 +21,13 @@ botMessages["default_msgs"] = [new AI_Message("I am not sure what you have sent,
                                 ];
 botMessages["prompt_msgs"] = new AI_Message("Let me know if you require any further help!", "G02");
 botMessages["followup_prompt"] = new AI_Message("Here are some follow up questions you might be interested to ask!", "G02");
-botMessages["tour_setup_msgs"] = [new AI_Message("Have you been to this museum before?", "G02"),
-                                new AI_Message("Please enter your age group."),
-                                new AI_Message("Select your interests and what you wish to see in your tour.", "G02"),
-                                new AI_Message("Indicate your preferred tour duration."),
-                                new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04")
-                                ];
+// botMessages["tour_setup_msgs"] = [new AI_Message("Have you been to this museum before?", "G02"),
+//                                 new AI_Message("Please enter your age group."),
+//                                 new AI_Message("Select your interests and what you wish to see in your tour.", "G02"),
+//                                 new AI_Message("Indicate your preferred tour duration."),
+//                                 new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04")
+//                                 ];
+botMessages["tour_setup_msgs"] = new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04");
 botMessages["wayfinding_msgs"] = [new AI_Message("Where would you like to head to?"),
                                 new AI_Message("This is how to get to your destination", "G04"),
                                 new AI_Message("There does not seem to be a destination with that name.")
@@ -165,6 +166,10 @@ function suggestTour() {
     
 }
 
+function tourFinalSpeech() {
+    speak(botMessages["tour_setup_msgs"].message, botMessages["tour_setup_msgs"].gesture);
+}
+
 function tourSetupSpeak(stage) {
     console.log("tourSetupSpeak: " + botMessages["tour_setup_msgs"][stage]);
     speak(botMessages["tour_setup_msgs"][stage].message, botMessages["tour_setup_msgs"][stage].gesture);
@@ -254,13 +259,14 @@ function botResponse(response) {
             chatBody.appendChild(botMessageDiv);
             const botSpan = botMessageDiv.querySelector('span');
             // After typing finishes, swap to HTML with bold formatting
-            botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            botSpan.innerHTML = bot_reply.message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
 
             if (prompt == true) {
                 var prompt_msg = botMessages["prompt_msgs"];
                 botMessage(prompt_msg.message, prompt_msg.gesture);
             }
             if (wayfindingMode && code != null) {
+                console.log("Opening wayfinding map");
                 openWayfinding();
                 // Handle messages from the iframe to update the URL
                 window.addEventListener('message', (event) => {

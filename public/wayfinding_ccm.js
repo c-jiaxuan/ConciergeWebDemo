@@ -14,7 +14,7 @@
 
 let destinations = {};   // Dictionary to store all destinations
 destinations['Visitor Services'] = 's_790338f0134aeba7';
-destinations['Musuem Shop'] = 's_844cbb0fb67ee5bc';
+destinations['Museum Shop'] = 's_844cbb0fb67ee5bc';
 destinations['Changi Fortress'] = 's_f3a6c0b32a9e0119';
 destinations['Fallen Fortress'] = 's_a3eb1f899cd66b51';
 destinations['The Interned'] = 's_2cddc378c5705861';
@@ -38,9 +38,11 @@ function closeWayfinding() {
 function checkDestinations(stringName) {
     for (const key in destinations) {
         if(includeString(stringName, key)) {
+            console.log("Found destination in wayfinding");
             return destinations[key];    // Return the key of the location if there is a match
         }
     }
+    console.log("Unable to find destination in wayfinding");
     return null;
 }
 
