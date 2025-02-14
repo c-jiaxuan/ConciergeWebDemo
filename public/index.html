@@ -14,6 +14,7 @@
     </header>
     <button id="main-menu-button" onclick="goToMainMenu()" class="hidden">Main Menu</button>
     <div id="AIPlayerWrapper"></div>
+    <video id="AI-tour-video" class="premadeVideo" src="./videos/chapel.mp4"></video>
     <!-- Modal for Wayfinding -->
     <div id="wayfinding-modal" class="modal hidden">
         <div class="modal-content">
@@ -56,7 +57,7 @@
             <!-- Landing Screen -->
             <div id="landing-screen">
                 <p class="question">Welcome! What would you like to do today?</p>
-                <button onclick="startGuidedTour()">Guided Tour Setup</button>
+                <button onclick="startGuidedTour(); swapToVideo()">Guided Tour Setup</button>
                 <button onclick="showChatInterface(); beginChat()">Ask AI</button>
                 <button onclick="openWayfinding()">Wayfinding Page</button>
             </div>

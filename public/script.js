@@ -303,3 +303,38 @@ async function makeRequest(method, url, params) {
       return undefined;
     });
 }
+
+var premadeVideo_element = document.getElementById('AI-tour-video');
+
+function swapToVideo() {
+    wrapper.classList.add("hiddenVideo"); // Hide Avatar
+    premadeVideo_element.style.width = "100vw";
+    premadeVideo_element.style.height = "100vh";
+    playVideo(premadeVideo_element);
+
+    // When video ends, reset wrapper size and hide video
+    premadeVideo_element.addEventListener("ended", () => {
+    wrapper.classList.remove("hiddenVideo"); // Show Avatar
+    premadeVideo_element.style.width = "0";
+    premadeVideo_element.style.height = "0";
+    });
+}
+
+function playVideo(videoToPlay) {
+  //Play next video + resize
+  if(videoToPlay != null) {
+    videoToPlay.play();
+    videoToPlay.style.width = "100%";
+    videoToPlay.style.height = "100%";
+  }
+}
+
+// Pause a video and reduce it's size to 0px
+function pauseVideo(videoToPause) {
+  if (videoToPause != null) {
+    videoToPause.pause();
+    videoToPause.currentTime = 0;
+    videoToPause.style.width = '0px';
+    videoToPause.style.height = '0px';
+  }
+}
