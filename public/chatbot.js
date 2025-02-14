@@ -12,24 +12,17 @@ let processingSpeak = false;
 var substring_1 = "prisoners of war";
 var substring_2 = "liberation";
 var substring_3 = "wayfinding";
+var substring_4 = "where is the ";  // Prefix for asking to wayfind to somewhere eg, "where is the Museum Shop"
 
 let botMessages = {};   // Dictionary to store all preset bot messages
 botMessages["start_msg"] = new AI_Message("Hello! Welcome to the Changi Chapel Museum. How can I help you today?", "G05");
 botMessages["greeting_msg"] = new AI_Message("Hi! Let me know if you have any questions, you can input your questions into the input box, or by using the \"Speak to AI\" button");
-// botMessages["pow_response"] = new AI_Message("Before the war, Changi had been a formidable military garrison, but with surrender it now became a place of isolation and numbing drudgery for thousands of new prisoners of war (POWs). The Japanese left the day-to-day running of the camps to the prisoners due to their sheer numbers, communicating instead through their officers or appointed representatives. To keep the camps in a liveable state, laborious chores and duties were shared among internees, from daily jobs like cooking and cleaning to the disposal of night soil. Precious little time was left over for personal activities before the lights went out each night. For the internees of Changi, the prospect of imprisonment was grim, but they were determined to endure what lay ahead.", "G02");
-// botMessages["liberation_response"] = new AI_Message("By mid-1945, Germany had surrendered and the Allied forces were poised for an invasion of Japan. Just days after atomic bombs devastated the Japanese cities of Hiroshima and Nagasaki, Emperor Hirohito formally announced the unconditional surrender of all Japanese forces on 15 August 1945. Stunned by their defeat, some Japanese soldiers did not immediately obey their orders, unable to accept the shame of surrender. All the soldiers were eventually imprisoned as the Allied POWs had been in 1942. The internees, who had by now waited three and a half years for liberation, experienced everything from joy to relief. The Union Jack, carefully hidden from the Japanese during imprisonment, was raised once more as Allied soldiers returned to Singapore.", "G02");
 botMessages["premade_tour_response"] = new AI_Message("Here is a tour you might be interested in!", "G02");
 botMessages["default_msgs"] = [new AI_Message("I am not sure what you have sent, please try again."),
                                 new AI_Message("I don't quite understand what you are saying, please try again.")
                                 ];
 botMessages["prompt_msgs"] = new AI_Message("Let me know if you require any further help!", "G02");
 botMessages["followup_prompt"] = new AI_Message("Here are some follow up questions you might be interested to ask!", "G02");
-// botMessages["tour_setup_msgs"] = [new AI_Message("Have you been to this museum before?", "G02"),
-//                                 new AI_Message("Please enter your age group."),
-//                                 new AI_Message("Select your interests and what you wish to see in your tour.", "G02"),
-//                                 new AI_Message("Indicate your preferred tour duration."),
-//                                 new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04")
-//                                 ];
 botMessages["tour_setup_msgs"] = new AI_Message("Did I get your tour preferences correctly? If it is please click on the proceed with tour button.", "G04");
 botMessages["wayfinding_msgs"] = [new AI_Message("Where would you like to head to?"),
                                 new AI_Message("This is how to get to your destination", "G04"),
@@ -75,47 +68,15 @@ const bot_typing_speed = 65;
 const chatBody = document.getElementById('chat-history-container');
 const userInput = document.getElementById('input');
 
+const USER_BUBBLE = 'message user';
+const BOT_BUBBLE = 'message bot'
+
 const now = new Date();
 const dateString = now.toLocaleDateString();
 const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
 // To store the destination for wayfinding
 var destination = "";
-
-// Key in destination from chatbot
-// Open wayfinding modal
-// Send message with destination to wayfinding iframe
-
-// Happens during AI_PLAYER.onAIPlayerStateChanged.state === 'playerLoadComplete'
-async function preloadAllMessages() {
-    // Loop through the dictionary
-    preloadFlag = true; // Set flag to true to start preloading
-    console.log("preloadFlag state: " + preloadFlag);
-    console.log("preloading messages...");
-    for (const key in botMessages) {
-        if (botMessages.hasOwnProperty(key)) {
-            const value = botMessages[key];
-            
-            if (Array.isArray(value)) {
-                // If the value is an array, loop through its elements
-                value.forEach(async (item, index) => {
-                    //console.log(`  [${index}] ${item}`);
-                    const canPreload = AI_PLAYER.canPreload(callback = () => { });
-                    console.log("canPreload: " + canPreload);
-                    await sendPreload(item.message, item.gesture);
-                    //await AI_PLAYER.preload(item);
-                });
-            } else {
-                // If the value is not an array, log it directly
-                //console.log(`Key: ${key}, Value: ${value}`);
-                const canPreload = AI_PLAYER.canPreload(callback = () => { });
-                console.log("canPreload: " + canPreload);
-                await sendPreload(value.message, value.gesture);
-                //await AI_PLAYER.preload(value);
-            }
-        }
-    }
-}
 
 function countDictionary() {
     // Loop through the dictionary
@@ -197,10 +158,8 @@ function sendMessage() {
     if (message === '') return;
 
     // Add user message
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message user';
-    userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
-    chatBody.appendChild(userMessage);
+
+    createMsgBubble(USER_BUBBLE, message);
 
     createProcessingStatusText();
     processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
@@ -243,10 +202,16 @@ function botResponse(response) {
     var lowerCase_response = response.toLowerCase();
     var code = null;
     if (!wayfindingMode) {
-        if (lowerCase_response.includes(substring_1)) {
-            bot_reply = botMessages["pow_response"];
-        } else if (lowerCase_response.includes(substring_2)) {
-            bot_reply = botMessages["liberation_response"];
+        if (lowerCase_response.includes(substring_4)) {
+            wayfindingMode = true;
+            var destination = extractLocationFromInput(lowerCase_response);
+            code = checkDestinations(destination);
+            if (code == null) {
+                bot_reply = botMessages['wayfinding_msgs'][2];
+            } else {
+                bot_reply = botMessages['wayfinding_msgs'][1];
+            }
+            prompt = false;
         } else if (includeString(response, 'wayfinding')) {
             bot_reply = botMessages['wayfinding_msgs'][0];
             wayfindingMode = true;
@@ -274,13 +239,12 @@ function botResponse(response) {
             showProcessingBtn(false);
 
             speak(bot_reply.message, bot_reply.gesture);
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'message bot';
-            botMessageDiv.innerHTML = `<span>${bot_reply.message}</span><div class="message-time">${dateString} ${timeString}</div>`;
-            chatBody.appendChild(botMessageDiv);
+
+            var botMessageDiv = createMsgBubble(BOT_BUBBLE, bot_reply.message);
+
             const botSpan = botMessageDiv.querySelector('span');
             // After typing finishes, swap to HTML with bold formatting
-            botSpan.innerHTML = bot_reply.message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            botSpan.innerHTML = bot_reply.message.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
 
             if (prompt == true) {
                 var prompt_msg = botMessages["prompt_msgs"];
@@ -301,77 +265,6 @@ function botResponse(response) {
 
             processing_status?.remove();
             processing_status = null;
-
-            // Scroll to the bottom
-            chatBody.scrollTop = chatBody.scrollHeight;
-        });
-    }
-}
-
-// Takes in response from user input and replies based on input
-// Takes in a bool 'prompt' for whether to prompt the user for more input
-function botResponse_Typing(response) {
-    var bot_reply = null;
-    var prompt = true;
-    var lowerCase_response = response.toLowerCase();
-    var code = null;
-    if (!wayfindingMode) {
-        if (lowerCase_response.includes(substring_1)) {
-            bot_reply = botMessages["pow_response"];
-        } else if (lowerCase_response.includes(substring_2)) {
-            bot_reply = botMessages["liberation_response"];
-        } else if (includeString(response, 'wayfinding')) {
-            bot_reply = botMessages['wayfinding_msgs'][0];
-            wayfindingMode = true;
-            prompt = false;
-        } else {
-            // bot_reply = getRandomElement(botMessages["default_msgs"]);
-            var response = postAPI(response);
-            prompt = false;
-        }
-    } else {
-        code = checkDestinations(response.toLowerCase());
-        if (code == null) {
-            bot_reply = botMessages['wayfinding_msgs'][2];
-        } else {
-            bot_reply = botMessages['wayfinding_msgs'][1];
-        }
-        prompt = false;
-    }
-
-    if (bot_reply != null) {
-        setTimeout(() => {
-            speak(bot_reply.message, bot_reply.gesture);
-            const botMessageDiv = document.createElement('div');
-            botMessageDiv.className = 'message bot';
-            botMessageDiv.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
-            chatBody.appendChild(botMessageDiv);
-            const botSpan = botMessageDiv.querySelector('span');
-
-            let i = 0;
-            const interval = setInterval(() => {
-                if (i < bot_reply.message.length) {
-                    botSpan.textContent += bot_reply.message[i];
-                    i++;
-                } else {
-                    clearInterval(interval);
-                    if (prompt == true) {
-                        var prompt_msg = botMessages["prompt_msgs"];
-                        botMessage(prompt_msg.message, prompt_msg.gesture, false);
-                    }
-                    if (wayfindingMode && code != null) {
-                        openWayfinding();
-                        // Handle messages from the iframe to update the URL
-                        window.addEventListener('message', (event) => {
-                            if (event.data.type === 'app-loaded') {
-                                console.log("Iframe has loaded!");
-                                setDestination(code);
-                                wayfindingMode = false;
-                            }
-                        });
-                    }
-                }
-            }, bot_typing_speed)
 
             // Scroll to the bottom
             chatBody.scrollTop = chatBody.scrollHeight;
@@ -421,13 +314,12 @@ function botMessage(setMessage, gesture, delay) {
     
             function showBotMessage(){
                 showRecordBtn();
-                const botMessageElement = document.createElement('div');
-                botMessageElement.className = 'message bot';
-                botMessageElement.innerHTML = `<span>${setMessage}</span><div class="message-time">${dateString} ${timeString}</div>`;
-                chatBody.appendChild(botMessageElement);
-                const botSpan = botMessageElement.querySelector('span');
+
+                var botMessageDiv = createMsgBubble(BOT_BUBBLE, setMessage);
+
+                const botSpan = botMessageDiv.querySelector('span');
                 // After typing finishes, swap to HTML with bold formatting
-                botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>')
     
                 processing_status?.remove();
                 processing_status = null;
@@ -465,11 +357,9 @@ function botMessage(setMessage, gesture, delay) {
     {
         speak(setMessage.toString(), gesture);
         showRecordBtn();
-        const botMessageElement = document.createElement('div');
-        botMessageElement.className = 'message bot';
-        botMessageElement.innerHTML = `<span>${setMessage}</span><div class="message-time">${dateString} ${timeString}</div>`;
-        chatBody.appendChild(botMessageElement);
-        const botSpan = botMessageElement.querySelector('span');
+
+        var botMessageDiv = createMsgBubble(BOT_BUBBLE, setMessage);
+        const botSpan = botMessageDiv.querySelector('span');
         // After typing finishes, swap to HTML with bold formatting
         botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
 
@@ -504,65 +394,6 @@ function botMessage(setMessage, gesture, delay) {
         chatBody.scrollTop = chatBody.scrollHeight;
     }
 }
-
-// Takes in a message to be sent by the bot
-function botMessage_Typing(setMessage, gesture) {
-    setTimeout(() => {
-        speak(setMessage.toString(), gesture);
-        const botMessageElement = document.createElement('div');
-        botMessageElement.className = 'message bot';
-        botMessageElement.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
-        chatBody.appendChild(botMessageElement);
-        const botSpan = botMessageElement.querySelector('span');
-
-        let i = 0;
-        let plainText = ""; // Store raw text for typing effect
-
-        const interval = setInterval(() => {
-            if (i < setMessage.length) {
-                plainText += setMessage[i]; // Type character by character
-                botSpan.textContent = plainText; // Show plain text while typing
-                i++;
-            } else {
-                clearInterval(interval);
-
-                // After typing finishes, swap to HTML with bold formatting
-                botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-
-                console.log("Follow up questions : " + g_follow_up_questions);
-
-                if (g_follow_up_questions != null) {
-                    const followupMessageElemenet = document.createElement('div');
-                    followupMessageElemenet.className = 'message bot';
-                    followupMessageElemenet.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
-                    chatBody.appendChild(followupMessageElemenet);
-                    const followupSpan = followupMessageElemenet.querySelector('span');
-
-                    let header = document.createElement("p");
-                    header.textContent = "Some common follow-up questions:";
-                    header.style.fontWeight = "bold"; // Make header bold
-                    followupSpan.append(header);
-                    
-                    // Loop through follow-up questions and create bullet points
-                    g_follow_up_questions.forEach(question => {
-                        let li = document.createElement("li");
-                        li.textContent = question;
-                        followupSpan.appendChild(li);
-                    });
-                    
-
-                    console.log("Follow up questions found, sending follow up question...");
-                    //botMessage(g_follow_up_questions[0]);
-                    g_follow_up_questions = null;
-                }
-            }
-        }, bot_typing_speed);
-
-        // Scroll to the bottom
-        chatBody.scrollTop = chatBody.scrollHeight;
-    });
-}
-
 
 function postAPI(message) {
     console.log("posting API...");
@@ -642,6 +473,21 @@ function postAPI(message) {
     });
 }
 
+function createMsgBubble(userID, message) {
+    const botMessageDiv = document.createElement('div');
+    botMessageDiv.className = userID;
+    botMessageDiv.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(botMessageDiv);
+    return botMessageDiv;
+}
+
+function extractLocationFromInput(input) {
+    if (input.toLowerCase().startsWith(substring_4)) {
+        return input.slice(substring_4.length).trim();
+    }
+    return null; // Return null if the format doesn't match
+}
+
 function getRandomElement(arr) {
     const randomIndex = Math.floor(Math.random() * arr.length);
     return arr[randomIndex];
@@ -651,18 +497,6 @@ function includeString(source, keyword) {
     var L_src = source.toLowerCase();
     var L_key = keyword.toLowerCase();
     return (L_src.includes(L_key));
-}
-
-// Function to wait until the flag is set
-function waitForFlag() {
-    return new Promise((resolve) => {
-        const checkFlag = setInterval(() => {
-            if (preloadFlag) {
-                clearInterval(checkFlag); // Stop checking once the flag is true
-                resolve(); // Resolve the promise
-            }
-        }, 100); // Check every 100ms
-    });
 }
 
 function createProcessingStatusText(){

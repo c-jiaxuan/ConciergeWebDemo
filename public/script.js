@@ -315,3 +315,8 @@ async function makeRequest(method, url, params) {
       return undefined;
     });
 }
+
+function registerNextSpeak(speak){
+  isNextSpeakRegistered = true;
+  nextSpeak = speak;
+}

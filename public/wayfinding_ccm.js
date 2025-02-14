@@ -28,7 +28,7 @@ const iframe = document.getElementById('wayfinding-iframe');
 
 function openWayfinding() {
     document.getElementById('wayfinding-modal').classList.remove('hidden');
-    iframe.src = "https://app.mappedin.com/map/67ac618c9fc903000bb2dd3e?floor=m_0d8f2cd769eec5ad&you-are-here=1.36230888%2C103.97411405%2Cm_0d8f2cd769eec5ad";
+    iframe.src = "https://app.mappedin.com/map/67ac618c9fc903000bb2dd3e?floor=m_0d8f2cd769eec5ad&you-are-here=1.36229794%2C103.97410968%2Cm_0d8f2cd769eec5ad";
 }
 
 function closeWayfinding() {
@@ -54,7 +54,7 @@ function setDestination(destination) {
             state: '/directions', // or '/'
             floor: 'm_0d8f2cd769eec5ad',
             location: destination,
-            departure: 's_844cbb0fb67ee5bc'
+            departure: 's_790338f0134aeba7'
         }
     }, "https://app.mappedin.com/map/67ac618c9fc903000bb2dd3e?floor=m_0d8f2cd769eec5ad&you-are-here=1.36230888%2C103.97411405%2Cm_0d8f2cd769eec5ad");
 }
