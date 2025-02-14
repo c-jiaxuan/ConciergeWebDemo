@@ -59,7 +59,7 @@ function endRecognize(hasUserInput) {
   stopRecording(hasUserInput);
 
   if(!hasUserInput){
-    showProcessingBtn();
+    showRecordBtn();
   }
 }
 
@@ -127,6 +127,8 @@ function startRecording(_stringArray) {
 }
 
 function stopRecording(hasUserInput) {
+  if(!hasUserInput) return;
+
   console.log("Stop record user voice");
 
   if (!streamStreaming) return;
@@ -150,15 +152,16 @@ function stopRecording(hasUserInput) {
   const userVoiceInput = googleSttText?.trim();
   console.log(userVoiceInput);
 
-  //Update UI to processing
-  showProcessingBtn();
-  
   //Send recognized text to chatbot
   if(userVoiceInput != "")
+  {
     sendMessageFromSpeech(userVoiceInput);
+    //Update UI to processing
+    showProcessingBtn();
+  }
   else
   {
-    showTalkBtn();
+    showRecordBtn();
   }
 
   //Set the recording to be done

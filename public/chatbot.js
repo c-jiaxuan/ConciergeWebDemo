@@ -196,7 +196,8 @@ function sendMessageFromSpeech(message){
 
 // Takes in response from user input and replies based on input
 // Takes in a bool 'prompt' for whether to prompt the user for more input
-function botResponse(response) {
+function botResponse(response) 
+{
     var bot_reply = null;
     var prompt = true;
     var lowerCase_response = response.toLowerCase();
@@ -270,6 +271,8 @@ function botResponse(response) {
             chatBody.scrollTop = chatBody.scrollHeight;
         });
     }
+
+    showTalkBtn();
 }
 
 // Takes in a message to be sent by the bot
