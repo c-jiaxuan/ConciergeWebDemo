@@ -6,6 +6,9 @@ class AI_Message {
     }
 }
 
+var processing_status = null;
+let processingSpeak = false;
+
 var substring_1 = "prisoners of war";
 var substring_2 = "liberation";
 var substring_3 = "wayfinding";
@@ -32,6 +35,9 @@ botMessages["wayfinding_msgs"] = [new AI_Message("Where would you like to head t
                                 new AI_Message("This is how to get to your destination", "G04"),
                                 new AI_Message("There does not seem to be a destination with that name.")
                                 ];
+
+botMessages["processing_msg"] = new AI_Message("Thank you! Please wait while I'm processing your question and I will reply to you shortly");
+
 
 // GO2 - Left Hand
 // GO3 - Right Hand
@@ -179,7 +185,7 @@ function tourSetupSpeak(stage) {
 function beginChat() {
     if (!startedChat) {
         console.log("Beginning chat");
-        botMessage(botMessages["greeting_msg"].message, botMessages["greeting_msg"].gesture);
+        botMessage(botMessages["greeting_msg"].message, botMessages["greeting_msg"].gesture, false);
         startedChat = true;
     }
 }
@@ -196,7 +202,14 @@ function sendMessage() {
     userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
     chatBody.appendChild(userMessage);
 
+    createProcessingStatusText();
+    processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(processing_status);
+
     userInput.value = '';
+
+    // Scroll to the bottom
+    chatBody.scrollTop = chatBody.scrollHeight;
 
     botResponse(message);
 }
@@ -210,7 +223,14 @@ function sendMessageFromSpeech(message){
     userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
     chatBody.appendChild(userMessage);
 
+    createProcessingStatusText();
+    processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(processing_status);
+
     userInput.value = '';
+
+    // Scroll to the bottom
+    chatBody.scrollTop = chatBody.scrollHeight;
 
     botResponse(message);
 }
@@ -264,7 +284,7 @@ function botResponse(response) {
 
             if (prompt == true) {
                 var prompt_msg = botMessages["prompt_msgs"];
-                botMessage(prompt_msg.message, prompt_msg.gesture);
+                botMessage(prompt_msg.message, prompt_msg.gesture, false);
             }
             if (wayfindingMode && code != null) {
                 console.log("Opening wayfinding map");
@@ -278,6 +298,9 @@ function botResponse(response) {
                     }
                 });
             }
+
+            processing_status?.remove();
+            processing_status = null;
 
             // Scroll to the bottom
             chatBody.scrollTop = chatBody.scrollHeight;
@@ -334,7 +357,7 @@ function botResponse_Typing(response) {
                     clearInterval(interval);
                     if (prompt == true) {
                         var prompt_msg = botMessages["prompt_msgs"];
-                        botMessage(prompt_msg.message, prompt_msg.gesture);
+                        botMessage(prompt_msg.message, prompt_msg.gesture, false);
                     }
                     if (wayfindingMode && code != null) {
                         openWayfinding();
@@ -357,9 +380,91 @@ function botResponse_Typing(response) {
 }
 
 // Takes in a message to be sent by the bot
-function botMessage(setMessage, gesture) {
-    setTimeout(() => {
+let flagTriggered = false;
+// Takes in a message to be sent by the bot
+function botMessage(setMessage, gesture, delay) {
+    if(delay)
+    {
+        registerNextSpeak(setMessage.toString());
+        setTimeout(() => {
+            // Event listener for early trigger
+            function flagHandler() {
+                flagTriggered = true;
+                console.log(Error, "Flag triggered");
+                document.removeEventListener("AICLIPSET_PLAY_STARTED", flagHandler); // Clean up
+            }
+        
+            document.addEventListener("AICLIPSET_PLAY_STARTED", flagHandler)
+    
+            new Promise((resolve) => {
+                // Check for 7 seconds timeout
+                const timeout = setTimeout(() => {
+                    console.log(Error, "Timeout return");
+                    document.removeEventListener("AICLIPSET_PLAY_STARTED", flagHandler);
+                    showBotMessage();
+                    resolve();
+                }, 7000);
+    
+                // Check every 300ms
+                const interval = setInterval(() => {
+                    if(flagTriggered){
+                        console.log(Error, "flag return");
+                        flagTriggered = false;
+                        clearTimeout(timeout);
+                        clearInterval(interval);
+                        showBotMessage();
+                        document.removeEventListener("AICLIPSET_PLAY_STARTED", flagHandler); // Clean up
+                        resolve();
+                    }
+                }, 300);
+            });
+    
+            function showBotMessage(){
+                showRecordBtn();
+                const botMessageElement = document.createElement('div');
+                botMessageElement.className = 'message bot';
+                botMessageElement.innerHTML = `<span>${setMessage}</span><div class="message-time">${dateString} ${timeString}</div>`;
+                chatBody.appendChild(botMessageElement);
+                const botSpan = botMessageElement.querySelector('span');
+                // After typing finishes, swap to HTML with bold formatting
+                botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+    
+                processing_status?.remove();
+                processing_status = null;
+    
+                if (g_follow_up_questions != null) {
+                    const followupMessageElemenet = document.createElement('div');
+                    followupMessageElemenet.className = 'message bot';
+                    followupMessageElemenet.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
+                    chatBody.appendChild(followupMessageElemenet);
+                    const followupSpan = followupMessageElemenet.querySelector('span');
+    
+                    let header = document.createElement("p");
+                    //**Add avatar talking**
+                    header.textContent = "Some common follow-up questions:";
+                    header.style.fontWeight = "bold"; // Make header bold
+                    followupSpan.append(header);
+                    
+                    // Loop through follow-up questions and create bullet points
+                    g_follow_up_questions.forEach(question => {
+                        let li = document.createElement("li");
+                        li.textContent = question;
+                        followupSpan.appendChild(li);
+                    });
+                    console.log("Follow up questions found, sending follow up question...");
+                    //botMessage(g_follow_up_questions[0]);
+                    g_follow_up_questions = null;
+                }
+    
+                // Scroll to the bottom
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }
+        }, 5500);
+    }
+    else
+    {
         speak(setMessage.toString(), gesture);
+        showRecordBtn();
         const botMessageElement = document.createElement('div');
         botMessageElement.className = 'message bot';
         botMessageElement.innerHTML = `<span>${setMessage}</span><div class="message-time">${dateString} ${timeString}</div>`;
@@ -367,6 +472,9 @@ function botMessage(setMessage, gesture) {
         const botSpan = botMessageElement.querySelector('span');
         // After typing finishes, swap to HTML with bold formatting
         botSpan.innerHTML = setMessage.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+
+        processing_status?.remove();
+        processing_status = null;
 
         if (g_follow_up_questions != null) {
             const followupMessageElemenet = document.createElement('div');
@@ -376,6 +484,7 @@ function botMessage(setMessage, gesture) {
             const followupSpan = followupMessageElemenet.querySelector('span');
 
             let header = document.createElement("p");
+            //**Add avatar talking**
             header.textContent = "Some common follow-up questions:";
             header.style.fontWeight = "bold"; // Make header bold
             followupSpan.append(header);
@@ -386,8 +495,6 @@ function botMessage(setMessage, gesture) {
                 li.textContent = question;
                 followupSpan.appendChild(li);
             });
-            
-
             console.log("Follow up questions found, sending follow up question...");
             //botMessage(g_follow_up_questions[0]);
             g_follow_up_questions = null;
@@ -395,7 +502,7 @@ function botMessage(setMessage, gesture) {
 
         // Scroll to the bottom
         chatBody.scrollTop = chatBody.scrollHeight;
-    });
+    }
 }
 
 // Takes in a message to be sent by the bot
@@ -462,7 +569,7 @@ function postAPI(message) {
 
     const payload = {
         "app": bot_app,
-        "q": message,
+        "q": message + ". Summarise in 2 short sentences",
         "context": "Add context from matches. Use the format:\n\nDOC_ID: 1\nTITLE: (title)\n(page_content)\n\nDOC_ID: 2\nTITLE: ...\n...",
         "Followup": bot_followup,
         "Tone": bot_tone,
@@ -510,12 +617,19 @@ function postAPI(message) {
         console.log("Cleaned Message Content:", messageContent);
         console.log("Follow-Up Questions:", followUpQuestions);
 
+        // Send the message
         if (messageContent == "") {
             messageContent = getRandomElement(botMessages['default_msgs']).message;
         }
+        else{
+            speak(botMessages["processing_msg"].message, botMessages["processing_msg"].gesture);
+            processingSpeak=true;
+        }
+
+        processing_status.innerHTML = `<span>Processing the answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
 
         // Send the message
-        botMessage(messageContent);
+        botMessage(messageContent, "", true);
 
         g_bot_response = messageContent;
         g_follow_up_questions = followUpQuestions;
@@ -549,4 +663,11 @@ function waitForFlag() {
             }
         }, 100); // Check every 100ms
     });
+}
+
+function createProcessingStatusText(){
+    processing_status = document.createElement('div');
+    processing_status.className = 'message user';
+    processing_status.id = 'processing_status';
+    return processing_status;
 }

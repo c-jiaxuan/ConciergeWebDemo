@@ -15,6 +15,10 @@ const DATA = {};
 
 initSample();
 
+// To store next speak in case of multiple speak
+var isNextSpeakRegistered = false;
+var nextSpeak = "";
+
 async function initSample() {
   initAIPlayerEvent();
   await generateClientToken();
@@ -159,6 +163,14 @@ function initAIPlayerEvent() {
       case AIEventType.AICLIPSET_PLAY_STARTED:
         typeName = 'AICLIPSET_PLAY_STARTED';
         // $("#AIPlayerStateText").text("AI started speaking.");
+
+        if(isNextSpeakRegistered){
+          isNextSpeakRegistered = false;
+          speak(nextSpeak);
+        }
+
+        document.dispatchEvent(new Event('AICLIPSET_PLAY_STARTED'));
+
         break;
       case AIEventType.AICLIPSET_PLAY_COMPLETED:
         typeName = 'AICLIPSET_PLAY_COMPLETED';
@@ -423,3 +435,8 @@ resultsVideo_element.addEventListener('ended', () => {
 idleVideo_element.addEventListener('ended', () => {
   playVideo(idleVideo_element)
 })
+
+function registerNextSpeak(speak){
+  isNextSpeakRegistered = true;
+  nextSpeak = speak;
+}
