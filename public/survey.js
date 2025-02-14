@@ -53,7 +53,7 @@ function generateMessage() {
 
     return `Hello! 
     You have ${userExperience === 'yes' ? 'visited us before' : 'not visited us before'}. 
-    As a ${userAgeGroup}, your interests include: ${interests}, and you prefer the following tour durations: ${timeSlot}. 
+    As a ${userAgeGroup}, your interests include: \n ${interests}. \n Preferred tour durations: ${timeSlot}. 
     We hope you have a great experience!`;
 }
 

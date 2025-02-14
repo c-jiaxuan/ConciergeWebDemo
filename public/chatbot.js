@@ -158,7 +158,8 @@ function checkForFinishedPreloading() {
     console.log("Checking if preloaded finish against " + totalMessages + " items ...");
     if (preloadCount >= totalMessages) {
         console.log("Finished preloading all " + preloadCount + " messages");
-        speak(botMessages["start_msg"].message, botMessages["start_msg"].gesture);
+        // Uncommented since switched to using videos
+        // speak(botMessages["start_msg"].message, botMessages["start_msg"].gesture);
     }
 }
 
