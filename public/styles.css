@@ -44,7 +44,7 @@ body::before {
     right: -45%;
     height: 85%;    
     width: 50%;
-    z-index: 1;
+    z-index: 4;
 }
 
 /* Container Styling */
@@ -74,7 +74,7 @@ body::before {
     left: 0%;
     width: 0;
     height: 0;
-    z-index: 1;
+    z-index: 3;
     object-fit: cover; /* Ensures the video fills the screen */
 }
 
@@ -120,9 +120,8 @@ button:hover {
 }
 
 .hiddenVideo {
-    width: 0 !important;
-    height: 0 !important;
-    overflow: hidden;
+    width: 0px !important;
+    height: 0px !important;
 }
 
 /* Back Button Styling */
@@ -310,7 +309,7 @@ button:hover {
     display: flex; 
     flex-direction: column; 
     justify-content: flex-end;
-    z-index: 1
+    z-index: 4
 }
 
 .chat-history-container {

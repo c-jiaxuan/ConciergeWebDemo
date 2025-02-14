@@ -345,6 +345,7 @@ function init()
 // Plays a video and sets the size of the video element to the AvatarSize
 function playVideo(videoToPlay)
 {
+  // wrapper.classList.add("hidden"); // Show Avatar
   //Check if has current video
   //If yes => pause that video + resize
   if(playingVideo != null)
@@ -356,7 +357,7 @@ function playVideo(videoToPlay)
   //Play next video + resize
   if(videoToPlay != null)
   {
-    wrapper.classList.add("hiddenVideo"); // Hide Avatar
+    //wrapper.classList.add("hiddenVideo"); // Hide Avatar
     videoToPlay.play();
     videoToPlay.style.width = "100vw";
     videoToPlay.style.height = "100vh";
@@ -386,7 +387,7 @@ function showAvatar() {
   pauseVideo(durationVideo_element);
   pauseVideo(resultsVideo_element);
   pauseVideo(idleVideo_element);
-  wrapper.classList.remove("hiddenVideo"); // Show Avatar
+  // wrapper.classList.remove("hidden"); // Show Avatar
 }
 
 init();
