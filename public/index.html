@@ -12,9 +12,16 @@
             <img src="./Images/CCMLogo white.svg" alt="Logo">
         </div>
     </header>
-    <button id="main-menu-button" onclick="goToMainMenu()" class="hidden">Main Menu</button>
+    <button id="main-menu-button" onclick="goToMainMenu(); playVideo(idleVideo_element)" class="hidden">Main Menu</button>
     <div id="AIPlayerWrapper"></div>
     <video id="AI-tour-video" class="premadeVideo" src="./videos/chapel.mp4"></video>
+    <video id="AI-intro-video" class="premadeVideo" src="./videos/IntroVideo.mp4"></video>
+    <video id="AI-visited-video" class="premadeVideo" src="./videos/HaveYouVisitedThisMuseumBefore_TYpo.mp4"></video>
+    <video id="AI-agegroup-video" class="premadeVideo" src="./videos/AgeGroup.mp4"></video>
+    <video id="AI-interests-video" class="premadeVideo" src="./videos/Interests.mp4"></video>
+    <video id="AI-duration-video" class="premadeVideo" src="./videos/PreferredTourDuration.mp4"></video>
+    <video id="AI-results-video" class="premadeVideo" src="./videos/FinalResults.mp4"></video>
+    <video id="AI-idle-video" class="premadeVideo" src="./videos/idle.mp4" autoplay muted loop></video>
     <!-- Modal for Wayfinding -->
     <div id="wayfinding-modal" class="modal hidden">
         <div class="modal-content">
@@ -57,24 +64,24 @@
             <!-- Landing Screen -->
             <div id="landing-screen">
                 <p class="question">Welcome! What would you like to do today?</p>
-                <button onclick="startGuidedTour(); swapToVideo()">Guided Tour Setup</button>
-                <button onclick="showChatInterface(); beginChat()">Ask AI</button>
+                <button onclick="startGuidedTour(); playVideo(visitedVideo_element)">Guided Tour Setup</button>
+                <button onclick="showChatInterface(); showAvatar(); beginChat()">Ask AI</button>
                 <button onclick="openWayfinding()">Wayfinding Page</button>
             </div>
 
             <!-- Step 1: Have you been here before -->
             <div id="step-1" class="hidden">
                 <p class="question">Have you been to this museum before?</p>
-                <button onclick="handleExperience('yes')">Yes</button>
+                <button onclick="handleExperience('yes'); playVideo(agegroupVideo_element)">Yes</button>
                 <button onclick="handleExperience('no'); tourSetupSpeak(1)">No</button>
             </div>
 
             <!-- Other steps remain unchanged -->
             <div id="step-2" class="hidden">
                 <p class="question">What is your age group?</p>
-                <button onclick="handleAgeGroup('Child');">Under 18</button>
-                <button onclick="handleAgeGroup('Adult');">18-64</button>
-                <button onclick="handleAgeGroup('Senior');">65+</button>
+                <button onclick="handleAgeGroup('Child'); playVideo(interestsVideo_element)">Under 18</button>
+                <button onclick="handleAgeGroup('Adult'); playVideo(interestsVideo_element)">18-64</button>
+                <button onclick="handleAgeGroup('Senior'); playVideo(interestsVideo_element)">65+</button>
                 <button class="back-button" onclick="goBackToExperience()">Back</button>
             </div>
 
@@ -90,7 +97,7 @@
                     <label><input type="checkbox" value="Liberation" class="interests"> Liberation</label><br>
                     <label><input type="checkbox" value="Legacies" class="interests"> Legacies</label>
                 </div>
-                <button onclick="handleInterests()">Next</button>
+                <button onclick="handleInterests(); playVideo(durationVideo_element)">Next</button>
                 <button class="back-button" onclick="goBackToAgeGroup()">Back</button>
             </div>
 
@@ -101,7 +108,7 @@
                     <label><input type="checkbox" value="60 Minutes" class="time-slot"> 60 Minutes</label><br>
                     <label><input type="checkbox" value="90 Minutes" class="time-slot"> 90 Minutes</label><br>
                 </div>
-                <button onclick="handleTimeSlot(); tourFinalSpeech()">Submit</button>
+                <button onclick="handleTimeSlot(); playVideo(resultsVideo_element)">Submit</button>
                 <button class="back-button" onclick="goBackToInterests()">Back</button>
             </div>
             <div id="result" class="hidden">
