@@ -51,9 +51,6 @@ var llm_summarise_api_url = 'https://gramener.com/docsearch/summarize';
 var g_bot_response = null;
 var g_follow_up_questions = null;
 
-// True = server is open to synthesize, False = server is occupied
-// The flag to control execution
-let preloadFlag = false; 
 // To track how many messages have been preloaded
 var preloadCount = 0;
 var totalMessages = 0;
@@ -62,8 +59,6 @@ let startedChat = false;
 
 // To track whether the user is in the wayfinding mode
 let wayfindingMode = false;
-
-const bot_typing_speed = 65;
 
 const chatBody = document.getElementById('chat-history-container');
 const userInput = document.getElementById('input');
@@ -160,27 +155,6 @@ function sendMessage() {
     // Add user message
 
     createMsgBubble(USER_BUBBLE, message);
-
-    createProcessingStatusText();
-    processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
-    chatBody.appendChild(processing_status);
-
-    userInput.value = '';
-
-    // Scroll to the bottom
-    chatBody.scrollTop = chatBody.scrollHeight;
-
-    botResponse(message);
-}
-
-function sendMessageFromSpeech(message){
-    console.log("Sending message to bot");
-
-    // Add user message
-    const userMessage = document.createElement('div');
-    userMessage.className = 'message user';
-    userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
-    chatBody.appendChild(userMessage);
 
     createProcessingStatusText();
     processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
@@ -328,11 +302,8 @@ function botMessage(setMessage, gesture, delay) {
                 processing_status = null;
     
                 if (g_follow_up_questions != null) {
-                    const followupMessageElemenet = document.createElement('div');
-                    followupMessageElemenet.className = 'message bot';
-                    followupMessageElemenet.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
-                    chatBody.appendChild(followupMessageElemenet);
-                    const followupSpan = followupMessageElemenet.querySelector('span');
+                    const followupMessageElement = createMsgBubble(BOT_BUBBLE, "");
+                    const followupSpan = followupMessageElement.querySelector('span');
     
                     let header = document.createElement("p");
                     //**Add avatar talking**
@@ -370,11 +341,8 @@ function botMessage(setMessage, gesture, delay) {
         processing_status = null;
 
         if (g_follow_up_questions != null) {
-            const followupMessageElemenet = document.createElement('div');
-            followupMessageElemenet.className = 'message bot';
-            followupMessageElemenet.innerHTML = `<span></span><div class="message-time">${dateString} ${timeString}</div>`;
-            chatBody.appendChild(followupMessageElemenet);
-            const followupSpan = followupMessageElemenet.querySelector('span');
+            const followupMessageElement = createMsgBubble(USER_BUBBLE, "");
+            const followupSpan = followupMessageElement.querySelector('span');
 
             let header = document.createElement("p");
             //**Add avatar talking**
