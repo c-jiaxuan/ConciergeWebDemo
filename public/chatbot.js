@@ -230,9 +230,7 @@ function botResponse(response)
     if (bot_reply != null) {
         setTimeout(() => {
 
-            showRecordBtn(true);
-            showTalkBtn(false);
-            showProcessingBtn(false);
+            showRecordBtn();
 
             speak(bot_reply.message, bot_reply.gesture);
 
@@ -267,7 +265,7 @@ function botResponse(response)
         });
     }
 
-    showTalkBtn();
+    showRecordBtn();
 }
 
 // Takes in a message to be sent by the bot
