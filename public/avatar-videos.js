@@ -31,6 +31,7 @@ function init()
 
   //Play idle video
   playVideo(idleVideo_element);
+  setTimeout( function () { playVideo(introVideo_element) }, 9000);
 }
 
 // Plays a video and sets the size of the video element to the AvatarSize
