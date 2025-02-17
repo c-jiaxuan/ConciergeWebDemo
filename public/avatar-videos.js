@@ -1,7 +1,6 @@
 // Buffer to store and track which video element is being played
 var playingVideo = null;
 
-var tourVideo_element       = document.getElementById('AI-tour-video');
 var introVideo_element      = document.getElementById('AI-intro-video');
 var visitedVideo_element    = document.getElementById('AI-visited-video');
 var agegroupVideo_element   = document.getElementById('AI-agegroup-video');
@@ -13,7 +12,6 @@ var idleVideo_element       = document.getElementById('AI-idle-video');
 function init()
 {
   //Load all the video elements
-  tourVideo_element.load();
   introVideo_element.load();
   visitedVideo_element.load();
   agegroupVideo_element.load();
@@ -23,7 +21,6 @@ function init()
   idleVideo_element.load();
 
   //Pause all the video elements
-  pauseVideo(tourVideo_element);
   pauseVideo(introVideo_element);
   pauseVideo(visitedVideo_element);
   pauseVideo(agegroupVideo_element);
@@ -73,7 +70,6 @@ function pauseVideo(videoToPause) {
 
 function showAvatar() {
   //Pause all the video elements
-  pauseVideo(tourVideo_element);
   pauseVideo(introVideo_element);
   pauseVideo(visitedVideo_element);
   pauseVideo(agegroupVideo_element);
@@ -85,10 +81,6 @@ function showAvatar() {
 }
 
 init();
- 
-tourVideo_element.addEventListener('ended', () => {
-  playVideo(idleVideo_element)
-})
 
 introVideo_element.addEventListener('ended', () => {
   playVideo(idleVideo_element)
