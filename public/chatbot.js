@@ -168,6 +168,27 @@ function sendMessage() {
     botResponse(message);
 }
 
+function sendMessageFromSpeech(message){
+    console.log("Sending message to bot");
+
+    // Add user message
+    const userMessage = document.createElement('div');
+    userMessage.className = 'message user';
+    userMessage.innerHTML = `<span>${message}</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(userMessage);
+
+    createProcessingStatusText();
+    processing_status.innerHTML = `<span>Retrieving Answer...</span><div class="message-time">${dateString} ${timeString}</div>`;
+    chatBody.appendChild(processing_status);
+
+    userInput.value = '';
+
+    // Scroll to the bottom
+    chatBody.scrollTop = chatBody.scrollHeight;
+
+    botResponse(message);
+}
+
 // Takes in response from user input and replies based on input
 // Takes in a bool 'prompt' for whether to prompt the user for more input
 function botResponse(response) 
