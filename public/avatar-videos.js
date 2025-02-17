@@ -9,6 +9,10 @@ var durationVideo_element   = document.getElementById('AI-duration-video');
 var resultsVideo_element    = document.getElementById('AI-results-video');
 var idleVideo_element       = document.getElementById('AI-idle-video');
 
+document.getElementById("start-button").addEventListener("click", function() {
+  playVideo(introVideo_element)
+});
+
 function init()
 {
   //Load all the video elements
@@ -31,7 +35,6 @@ function init()
 
   //Play idle video
   playVideo(idleVideo_element);
-  setTimeout( function () { playVideo(introVideo_element) }, 9000);
 }
 
 // Plays a video and sets the size of the video element to the AvatarSize
@@ -57,6 +60,10 @@ function playVideo(videoToPlay)
 
   //Update current playing video
   playingVideo = videoToPlay;
+}
+
+function startDemo () {
+
 }
 
 // Pause a video and reduce it's size to 0px

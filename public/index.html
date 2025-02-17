@@ -12,6 +12,12 @@
             <img src="./Images/CCMLogo white.svg" alt="Logo">
         </div>
     </header>
+    <div id="overlay" class="overlay">
+        <div class="overlay-content">
+            <h2>Welcome to the Changi Chapel Museum</h2>
+            <button id="start-button">Meet the AI Concierge</button>
+        </div>
+    </div>
     <button id="main-menu-button" onclick="goToMainMenu(); playVideo(idleVideo_element)" class="hidden">Main Menu</button>
     <div id="AIPlayerWrapper"></div>
     <video id="AI-intro-video" class="premadeVideo" src="./videos/intro.mp4"></video>
@@ -135,6 +141,7 @@ src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
     <script src="chatbot.js"></script>
     <script src="wayfinding_ccm.js"></script>
     <script src="avatar-videos.js"></script>
+    <script src="start-screen-overlay.js"></script>
     <script src="./google-stt.js"></script>
 </body>
 </html>
