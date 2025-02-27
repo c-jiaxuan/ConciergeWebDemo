@@ -18,7 +18,24 @@
             <button id="start-button">Meet the AI Concierge</button>
         </div>
     </div>
-    <button id="main-menu-button" onclick="goToMainMenu(); showVideo('AI-idle-video')" class="hidden">Main Menu</button>
+    <div class="languageSelectorDiv">
+        <select id="langSelector" class="languageSelector">
+            <option value="en">English</option>
+            <option value="zh">Chinese</option>
+            <option value="ms">Malay</option>
+            <option value="ta">Tamil</option>
+        </select>
+    </div>
+    <div>
+        <p>Your browser language is: <b id="browserLang"></b></p>
+        <p>The selected language is: <b id="startLang"></b></p> 
+    </div>
+    <button id="main-menu-button" onclick="goToMainMenu(); showVideo('AI-idle-video')" class="hidden">
+        <p class="lang lang-en">Main Menu</p>
+        <p class="lang lang-zh">主菜单</p>
+        <p class="lang lang-ms">Menu Utama</p>
+        <p class="lang lang-ta">முதன்மை மெனு</p>
+    </button>
     <div id="AIPlayerWrapper"></div>
         <video id="AI-intro-video" class="premadeVideo" src="./videos/intro.mp4"></video>
         <video id="AI-visited-video" class="premadeVideo" src="./videos/visited.mp4"></video>
@@ -26,7 +43,7 @@
         <video id="AI-interests-video" class="premadeVideo" src="./videos/interests.mp4"></video>
         <video id="AI-duration-video" class="premadeVideo" src="./videos/duration.mp4"></video>
         <video id="AI-results-video" class="premadeVideo" src="./videos/preferences.mp4"></video>
-        <video id="AI-idle-video" class="premadeVideo" src="./videos/idle_2.mp4" autoplay muted loop></video>
+        <video id="AI-idle-video" class="premadeVideo" src="./videos/idle.mp4" autoplay muted loop></video>
     <!-- Modal for Wayfinding -->
     <div id="wayfinding-modal" class="modal hidden">
         <div class="modal-content">
@@ -34,10 +51,15 @@
                     allow="clipboard-write 'self' https://app.mappedin.com; web-share 'self' https://app.mappedin.com" 
                     scrolling="no" width="100%" height="1300" frameborder="0" style="border:0">
             </iframe>
-            <button class="close-button" onclick="closeWayfinding()">Close</button>
+            <button class="close-button" onclick="closeWayfinding()">
+                <p class="lang lang-en">Close</p>
+                <p class="lang lang-zh">关闭</p>
+                <p class="lang lang-ms">Tutup</p>
+                <p class="lang lang-ta">மூடு</p>
+            </button>
         </div>
     </div>
-    <div class="user_options">
+    <div id="user-options" class="user_options">
         <div id="chat-container" class="chat-container hidden">
             <div id="chat-history-container" class="chat-history-container">
             <!-- Messages appear here -->
@@ -50,47 +72,109 @@
             </div>
             <div id="speak-button-container" class="speak-button-container" onclick="startRecognize()">
                 <button class="button button1">
-                <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
-                Speak with AI</button>
+                    <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
+                    <p class="lang lang-en">Speak with AI</p>
+                    <p class="lang lang-zh">与人工智能对话</p>
+                    <p class="lang lang-ms">Bercakap dengan AI</p>
+                    <p class="lang lang-ta">AI உடன் பேசுங்கள்</p>
+                </button>
             </div>
             <div id="listening-button-container" class="speak-button-container" onclick="endRecognize(false)">
                 <button class="button button1">
-                <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
-                Listening...</button>
+                    <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
+                    <p class="lang lang-en">Listening...</p>
+                    <p class="lang lang-zh">听...</p>
+                    <p class="lang lang-ms">Mendengar...</p>
+                    <p class="lang lang-ta">கேட்கின்றேன்...</p>
+                </button>
             </div>
             <div id="processing-button-container" class="speak-button-container">
                 <button class="button button1">
-                <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
-                Processing...</button>
+                    <img src="./Images/Control_Signs/Mic-Icon.png" alt="Snow">
+                    <p class="lang lang-en">Processing...</p>
+                    <p class="lang lang-zh">处理...s</p>
+                    <p class="lang lang-ms">Pemprosesan...</p>
+                    <p class="lang lang-ta">செயலாக்கம்...</p>
+                </button>
             </div>
         </div>
         <div id="container" class="container">
             <!-- Landing Screen -->
             <div id="landing-screen">
-                <p class="question">Welcome! What would you like to do today?</p>
-                <button onclick="startGuidedTour(); showVideo('AI-visited-video')">Guided Tour Setup</button>
-                <button onclick="showChatInterface(); showAvatar(); beginChat()">Ask AI</button>
-                <button onclick="openWayfinding()">Wayfinding Page</button>
+                <p class="question">
+                    <p class="question lang lang-en">Welcome! What would you like to do today?</p>
+                    <p class="question lang lang-zh">欢迎！你今天想做什么？</p>
+                    <p class="question lang lang-ms">Selamat datang! Apa yang anda ingin lakukan hari ini?</p>
+                    <p class="question lang lang-ta">வரவேற்கிறேன்! இன்று நீங்கள் என்ன செய்ய விரும்புகிறீர்கள்?</p>
+                </p>
+                <button onclick="startGuidedTour(); showVideo('AI-visited-video')">
+                    <p class="lang lang-en">Guided Tour Setup</p>
+                    <p class="lang lang-zh">导览设置</p>
+                    <p class="lang lang-ms">Persediaan Lawatan Panduan</p>
+                    <p class="lang lang-ta">வழிகாட்டி சுற்றுலா அமைப்பு</p>
+                </button>
+                <button onclick="showChatInterface(); showAvatar(); beginChat()">
+                    <p class="lang lang-en">Ask AI</p>
+                    <p class="lang lang-zh">询问 AI</p>
+                    <p class="lang lang-ms">Tanya AI</p>
+                    <p class="lang lang-ta">ஏ.ஐ.யை கேளுங்கள்</p>
+                </button>
+                <button onclick="openWayfinding()">
+                    <p class="lang lang-en">Wayfinding Page</p>
+                    <p class="lang lang-zh">导航页面</p>
+                    <p class="lang lang-ms">Halaman Penunjuk Arah</p>
+                    <p class="lang lang-ta">வழிகாட்டும் பக்கம்</p>
+                </button>
             </div>
 
             <!-- Step 1: Have you been here before -->
             <div id="step-1" class="hidden">
-                <p class="question">Have you been to this museum before?</p>
-                <button onclick="handleExperience('yes'); showVideo('AI-agegroup-video')">Yes</button>
-                <button onclick="handleExperience('no'); showVideo('AI-agegroup-video')">No</button>
+                <p class="question">
+                    <p class="question lang lang-en">Have you been to this museum before?</p>
+                    <p class="question lang lang-zh">你以前来过这个博物馆吗？</p>
+                    <p class="question lang lang-ms">Pernahkah anda ke muzium ini sebelum ini?</p>
+                    <p class="question lang lang-ta">நீங்கள் இதற்கு முன்பு இந்த அருங்காட்சியகத்திற்கு வந்திருக்கிறீர்களா?</p>
+                </p>
+                <button onclick="handleExperience('yes'); showVideo('AI-agegroup-video')">
+                    <p class="lang lang-en">Yes</p>
+                    <p class="lang lang-zh">是的</p>
+                    <p class="lang lang-ms">Ya</p>
+                    <p class="lang lang-ta">ஆம்</p>
+                </button>
+                <button onclick="handleExperience('no'); showVideo('AI-agegroup-video')">
+                    <p class="lang lang-en">No</p>
+                    <p class="lang lang-zh">不</p>
+                    <p class="lang lang-ms">Tidak</p>
+                    <p class="lang lang-ta">இல்லை</p>
+                </button>
             </div>
 
             <!-- Other steps remain unchanged -->
             <div id="step-2" class="hidden">
-                <p class="question">What is your age group?</p>
+                <p class="question">                    
+                    <p class="question lang lang-en">What is your age group?</p>
+                    <p class="question lang lang-zh">您的年龄段是什么？</p>
+                    <p class="question lang lang-ms">Apakah kumpulan umur anda?</p>
+                    <p class="question lang lang-ta">உங்கள் வயது குழு என்ன?</p>
+                </p>
                 <button onclick="handleAgeGroup('Child'); showVideo('AI-interests-video')">Under 18</button>
                 <button onclick="handleAgeGroup('Adult'); showVideo('AI-interests-video')">18-64</button>
                 <button onclick="handleAgeGroup('Senior'); showVideo('AI-interests-video')">65+</button>
-                <button class="back-button" onclick="goBackToExperience(); showVideo('AI-agegroup-video')">Back</button>
+                <button class="back-button" onclick="goBackToExperience(); showVideo('AI-agegroup-video')">
+                    <p class="lang lang-en">Back</p>
+                    <p class="lang lang-zh">返回</p>
+                    <p class="lang lang-ms">Kembali</p>
+                    <p class="lang lang-ta">மீண்டும்</p>
+                </button>
             </div>
 
             <div id="step-3" class="hidden">
-                <p class="question">What are your interests?</p>
+                <p class="question">
+                    <p class="question lang lang-en">What are your interests?</p>
+                    <p class="question lang lang-zh">你有什么兴趣？</p>
+                    <p class="question lang lang-ms">Apakah minat anda?</p>
+                    <p class="question lang lang-ta">உங்கள் ஆர்வங்கள் என்ன?</p>
+                </p>
                 <div class="checkbox-group">
                     <label><input type="checkbox" value="Changi Fortress" class="interests"> Changi Fortress</label><br>
                     <label><input type="checkbox" value="Fallen Fortress" class="interests"> Fallen Fortress</label><br>
@@ -101,28 +185,63 @@
                     <label><input type="checkbox" value="Liberation" class="interests"> Liberation</label><br>
                     <label><input type="checkbox" value="Legacies" class="interests"> Legacies</label>
                 </div>
-                <button onclick="handleInterests(); showVideo('AI-duration-video')">Next</button>
-                <button class="back-button" onclick="goBackToAgeGroup(); showVideo('AI-agegroup-video')">Back</button>
+                <button onclick="handleInterests(); showVideo('AI-duration-video')">
+                    <p class="lang lang-en">Next</p>
+                    <p class="lang lang-zh">下一个</p>
+                    <p class="lang lang-ms">Seterusnya</p>
+                    <p class="lang lang-ta">அடுத்த</p>
+                </button>
+                <button class="back-button" onclick="goBackToAgeGroup(); showVideo('AI-agegroup-video')">
+                    <p class="lang lang-en">Back</p>
+                    <p class="lang lang-zh">返回</p>
+                    <p class="lang lang-ms">Kembali</p>
+                    <p class="lang lang-ta">மீண்டும்</p>
+                </button>
             </div>
 
             <div id="step-4" class="hidden">
-                <p class="question">What is your preferred tour duration?</p>
+                <p class="question">
+                    <p class="question lang lang-en">What is your preferred tour duration?</p>
+                    <p class="question lang lang-zh">您首选的旅行时间是多久？</p>
+                    <p class="question lang lang-ms">Apakah tempoh lawatan yang anda suka?</p>
+                    <p class="question lang lang-ta">உங்கள் விருப்பமான சுற்றுலா காலம் எவ்வளவு?</p>
+                </p>
                 <div class="checkbox-group">
                     <label><input type="checkbox" value="30 Minutes" class="time-slot"> 30 Minutes</label><br>
                     <label><input type="checkbox" value="60 Minutes" class="time-slot"> 60 Minutes</label><br>
                     <label><input type="checkbox" value="90 Minutes" class="time-slot"> 90 Minutes</label><br>
                 </div>
                 <button onclick="handleTimeSlot(); showVideo('AI-results-video')">Submit</button>
-                <button class="back-button" onclick="goBackToInterests(); showVideo('AI-interests-video')">Back</button>
+                <button class="back-button" onclick="goBackToInterests(); showVideo('AI-interests-video')">
+                    <p class="lang lang-en">Back</p>
+                    <p class="lang lang-zh">返回</p>
+                    <p class="lang lang-ms">Kembali</p>
+                    <p class="lang lang-ta">மீண்டும்</p>
+                </button>
             </div>
             <div id="result" class="hidden">
                 <p class="question" id="output-message"></p>
-                <button onclick="">Proceed with Tour</button>
-                <button class="back-button" onclick="restart(); showVideo('AI-visited-video')">Start Over</button>
+                <button onclick="">
+                    <p class="lang lang-en">Proceed with Tour</p>
+                    <p class="lang lang-zh">继续参观</p>
+                    <p class="lang lang-ms">Teruskan dengan Lawatan</p>
+                    <p class="lang lang-ta">சுற்றுப்பயணத்தைத் தொடரவும்</p>
+                </button>
+                <button class="back-button" onclick="restart(); showVideo('AI-visited-video')">
+                    <p class="lang lang-en">Start over</p>
+                    <p class="lang lang-zh">重新开始</p>
+                    <p class="lang lang-ms">Mula semula</p>
+                    <p class="lang lang-ta">மீண்டும் தொடங்கு</p>
+                </button>
             </div>
         </div>
         <div id="banner-image"  class="imageContainer">
-            <div class="text-overlay">Events</div>
+            <div class="text-overlay">
+                <p class="lang lang-en">Events</p>
+                <p class="lang lang-zh">事件</p>
+                <p class="lang lang-ms">Acara</p>
+                <p class="lang lang-ta">நிகழ்வுகள்</p>
+            </div>
             <img alt="banner-image" src="./Images/banner_2.png" width="100%">
         </div>
     </div>
@@ -143,5 +262,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
     <script src="./Javascript/avatar-videos.js"></script>
     <script src="./Javascript/start-screen-overlay.js"></script>
     <script src="./Javascript/google-stt.js"></script>
+    <script src="./Javascript/language-change.js"></script>
 </body>
 </html>

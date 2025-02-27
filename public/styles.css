@@ -27,6 +27,7 @@ body::before {
     padding: 16px;
     width: 100%; /* Full width of the viewport */
     z-index: 1000; /* Ensure it appears above other elements */
+    pointer-events: none;
 }
 
 .logo-container img {
@@ -40,11 +41,14 @@ body::before {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    top: 7vh;
-    right: -45%;
-    height: 85%;    
+    right: -45%;  
     width: 50%;
     z-index: 4;
+}
+
+.user_options_1 {
+    height: 90%;
+    top: -10%;
 }
 
 /* Container Styling */
@@ -160,7 +164,7 @@ button:hover {
     position: fixed;
     width: 35%;
     top: 10px;
-    right: 10px;
+    right: 15%;
     background: #007bff;
     color: white;
     padding: 10px 15px;
@@ -391,4 +395,19 @@ button:hover {
     font-weight: bold; /* Make it bold */
     color: #333; /* Darker color for visibility */
     margin-bottom: 15px; /* Add spacing */
+}
+
+.languageSelectorDiv {
+    position: relative;
+    z-index: 5;
+    height: 10%;
+}
+
+.languageSelector {
+    position: relative;
+    z-index: 5;
+    right: -89%;
+    height: 50%;
+    width: 10%;
+    pointer-events: normal;
 }

@@ -127,6 +127,7 @@ function goToMainMenu() {
     document.getElementById('container').classList.remove('hidden');
     document.getElementById('banner-image').classList.remove('hidden');
     document.getElementById('main-menu-button').classList.add('hidden');
+    document.getElementById('user-options').classList.remove('user_options_1');
 }
 
 function showChatInterface() {
@@ -135,4 +136,5 @@ function showChatInterface() {
     document.getElementById('container').classList.add('hidden');
     document.getElementById('banner-image').classList.add('hidden');
     document.getElementById('chat-container').classList.remove('hidden');
+    document.getElementById('user-options').classList.add('user_options_1');
 }

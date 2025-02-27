@@ -43,6 +43,8 @@ function showVideo(videoId) {
   // Hide all videos first
   document.querySelectorAll(".premadeVideo").forEach(video => {
       video.style.display = "none";
+      video.style.width = "0vw";
+      video.style.height = "0vh";
       video.pause(); // Pause other videos
   });
 
@@ -50,6 +52,8 @@ function showVideo(videoId) {
   let video = document.getElementById(videoId);
   if (video) {
       video.style.display = "block";
+      video.style.width = "100vw";
+      video.style.height = "100vh";
       video.play();
   }
 }
