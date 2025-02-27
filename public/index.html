@@ -18,15 +18,15 @@
             <button id="start-button">Meet the AI Concierge</button>
         </div>
     </div>
-    <button id="main-menu-button" onclick="goToMainMenu(); playVideo(idleVideo_element)" class="hidden">Main Menu</button>
+    <button id="main-menu-button" onclick="goToMainMenu(); showVideo('AI-idle-video')" class="hidden">Main Menu</button>
     <div id="AIPlayerWrapper"></div>
-    <video id="AI-intro-video" class="premadeVideo" src="./videos/intro.mp4"></video>
-    <video id="AI-visited-video" class="premadeVideo" src="./videos/visited.mp4"></video>
-    <video id="AI-agegroup-video" class="premadeVideo" src="./videos/age_group.mp4"></video>
-    <video id="AI-interests-video" class="premadeVideo" src="./videos/interests.mp4"></video>
-    <video id="AI-duration-video" class="premadeVideo" src="./videos/duration.mp4"></video>
-    <video id="AI-results-video" class="premadeVideo" src="./videos/preferences.mp4"></video>
-    <video id="AI-idle-video" class="premadeVideo" src="./videos/idle.mp4" autoplay muted loop></video>
+        <video id="AI-intro-video" class="premadeVideo" src="./videos/intro.mp4"></video>
+        <video id="AI-visited-video" class="premadeVideo" src="./videos/visited.mp4"></video>
+        <video id="AI-agegroup-video" class="premadeVideo" src="./videos/age_group.mp4"></video>
+        <video id="AI-interests-video" class="premadeVideo" src="./videos/interests.mp4"></video>
+        <video id="AI-duration-video" class="premadeVideo" src="./videos/duration.mp4"></video>
+        <video id="AI-results-video" class="premadeVideo" src="./videos/preferences.mp4"></video>
+        <video id="AI-idle-video" class="premadeVideo" src="./videos/idle_2.mp4" autoplay muted loop></video>
     <!-- Modal for Wayfinding -->
     <div id="wayfinding-modal" class="modal hidden">
         <div class="modal-content">
@@ -68,7 +68,7 @@
             <!-- Landing Screen -->
             <div id="landing-screen">
                 <p class="question">Welcome! What would you like to do today?</p>
-                <button onclick="startGuidedTour(); playVideo(visitedVideo_element)">Guided Tour Setup</button>
+                <button onclick="startGuidedTour(); showVideo('AI-visited-video')">Guided Tour Setup</button>
                 <button onclick="showChatInterface(); showAvatar(); beginChat()">Ask AI</button>
                 <button onclick="openWayfinding()">Wayfinding Page</button>
             </div>
@@ -76,17 +76,17 @@
             <!-- Step 1: Have you been here before -->
             <div id="step-1" class="hidden">
                 <p class="question">Have you been to this museum before?</p>
-                <button onclick="handleExperience('yes'); playVideo(agegroupVideo_element)">Yes</button>
-                <button onclick="handleExperience('no'); playVideo(agegroupVideo_element)">No</button>
+                <button onclick="handleExperience('yes'); showVideo('AI-agegroup-video')">Yes</button>
+                <button onclick="handleExperience('no'); showVideo('AI-agegroup-video')">No</button>
             </div>
 
             <!-- Other steps remain unchanged -->
             <div id="step-2" class="hidden">
                 <p class="question">What is your age group?</p>
-                <button onclick="handleAgeGroup('Child'); playVideo(interestsVideo_element)">Under 18</button>
-                <button onclick="handleAgeGroup('Adult'); playVideo(interestsVideo_element)">18-64</button>
-                <button onclick="handleAgeGroup('Senior'); playVideo(interestsVideo_element)">65+</button>
-                <button class="back-button" onclick="goBackToExperience(); playVideo(visitedVideo_element)">Back</button>
+                <button onclick="handleAgeGroup('Child'); showVideo('AI-interests-video')">Under 18</button>
+                <button onclick="handleAgeGroup('Adult'); showVideo('AI-interests-video')">18-64</button>
+                <button onclick="handleAgeGroup('Senior'); showVideo('AI-interests-video')">65+</button>
+                <button class="back-button" onclick="goBackToExperience(); showVideo('AI-agegroup-video')">Back</button>
             </div>
 
             <div id="step-3" class="hidden">
@@ -101,8 +101,8 @@
                     <label><input type="checkbox" value="Liberation" class="interests"> Liberation</label><br>
                     <label><input type="checkbox" value="Legacies" class="interests"> Legacies</label>
                 </div>
-                <button onclick="handleInterests(); playVideo(durationVideo_element)">Next</button>
-                <button class="back-button" onclick="goBackToAgeGroup()">Back</button>
+                <button onclick="handleInterests(); showVideo('AI-duration-video')">Next</button>
+                <button class="back-button" onclick="goBackToAgeGroup(); showVideo('AI-agegroup-video')">Back</button>
             </div>
 
             <div id="step-4" class="hidden">
@@ -112,17 +112,17 @@
                     <label><input type="checkbox" value="60 Minutes" class="time-slot"> 60 Minutes</label><br>
                     <label><input type="checkbox" value="90 Minutes" class="time-slot"> 90 Minutes</label><br>
                 </div>
-                <button onclick="handleTimeSlot(); playVideo(resultsVideo_element)">Submit</button>
-                <button class="back-button" onclick="goBackToInterests()">Back</button>
+                <button onclick="handleTimeSlot(); showVideo('AI-results-video')">Submit</button>
+                <button class="back-button" onclick="goBackToInterests(); showVideo('AI-interests-video')">Back</button>
             </div>
             <div id="result" class="hidden">
                 <p class="question" id="output-message"></p>
                 <button onclick="">Proceed with Tour</button>
-                <button class="back-button" onclick="restart(); playVideo(visitedVideo_element)">Start Over</button>
+                <button class="back-button" onclick="restart(); showVideo('AI-visited-video')">Start Over</button>
             </div>
         </div>
         <div id="banner-image"  class="imageContainer">
-            <div class="text-overlay">Ongoing Exhibitions</div>
+            <div class="text-overlay">Events</div>
             <img alt="banner-image" src="./Images/banner_2.png" width="100%">
         </div>
     </div>
@@ -136,12 +136,12 @@ src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"
 ></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdn-aihuman.deepbrainai.io/sdk/web/aiPlayer-1.5.3.min.js"></script>
-    <script src="script.js"></script>
-    <script src="survey.js"></script>
-    <script src="chatbot.js"></script>
-    <script src="wayfinding_ccm.js"></script>
-    <script src="avatar-videos.js"></script>
-    <script src="start-screen-overlay.js"></script>
-    <script src="./google-stt.js"></script>
+    <script src="./Javascript/script.js"></script>
+    <script src="./Javascript/survey.js"></script>
+    <script src="./Javascript/chatbot.js"></script>
+    <script src="./Javascript/wayfinding_ccm.js"></script>
+    <script src="./Javascript/avatar-videos.js"></script>
+    <script src="./Javascript/start-screen-overlay.js"></script>
+    <script src="./Javascript/google-stt.js"></script>
 </body>
 </html>

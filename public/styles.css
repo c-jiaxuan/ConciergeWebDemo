@@ -72,10 +72,11 @@ body::before {
     position: absolute;
     top: 0%;
     left: 0%;
-    width: 0;
-    height: 0;
+    width: 100vw;
+    height: 100vh;
     z-index: 3;
     object-fit: cover; /* Ensures the video fills the screen */
+    display: none;
 }
 
 /* Question Text */
